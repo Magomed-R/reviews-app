@@ -1,0 +1,39 @@
+services:
+  db:
+    container_name: reviews_app_db
+    image: postgres
+    ports:
+      - 0.0.0.0:5432:5432
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    networks:
+      - reviews-net
+
+  cache:
+    container_name: reviews_app_cache
+    image: redis
+    ports:
+      - 0.0.0.0:6379:6379
+    networks:
+      - reviews-net
+
+  api:
+    container_name: reviews_app_api
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    restart: always
+    networks:
+      - reviews-net
+    depends_on:
+      - db
+      - cache
+    env_file:
+      - ./server/.env
+
+networks:
+  reviews-net:
