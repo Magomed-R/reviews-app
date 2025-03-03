@@ -13,6 +13,7 @@ model Review {
   text       String
   rating     Int      @default(5)
   image_url  String
+  order      Int      @default(autoincrement())
   created_at DateTime @default(now())
 
   @@map("reviews")

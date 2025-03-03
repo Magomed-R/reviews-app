@@ -1,6 +1,6 @@
-import { Socket } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { bindReviewSocket } from './reviews'
 
-export const handleEvents = (socket: Socket) => {
-  bindReviewSocket(socket)
+export const handleEvents = (socket: Socket, io: Server) => {
+  bindReviewSocket(socket, io)
 }
