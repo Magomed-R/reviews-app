@@ -21,6 +21,12 @@ make
 
 Привет! Это тестовое задание для прохождения интервью в Amaya Soft
 
+СТЕК ПРОЕКТА:
+- Vue 3, Pinia, Swiper
+- TypeScript, Socket.io, Express.js
+- PrismaORM, PostgreSQL, Redis
+- Docker
+
 Задание было выполнено за ~14 часов с перерывами
 
 Если у вас остались какие-то вопросы, напишите мне в [телеграм](https://t.me/a_temp_file)
