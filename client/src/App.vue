@@ -1,85 +1,91 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted } from 'vue'
+import { RouterView } from 'vue-router'
+import { api } from './libs/axios'
+import { useReviewStore } from './stores/counter'
+import TransferButton from './components/TransferButton.vue'
+import { io } from './libs/socket'
+import type { Events } from './libs/socket'
+
+const reviewStore = useReviewStore()
+
+onMounted(async () => {
+  const req = await api.get('/reviews')
+
+  reviewStore.createMany(req.data)
+})
+
+io.on<Events>('review:created', (review) => {
+  reviewStore.create(review)
+})
+
+io.on<Events>('review:updated', (review) => {
+  reviewStore.update(review)
+})
+
+io.on<Events>('review:swaped', ([first, second]) => {
+  reviewStore.update(first)
+  reviewStore.update(second)
+})
+
+io.on<Events>('review:deleted', (review) => {
+  reviewStore.del(review)
+})
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <main>
+    <RouterView />
+    <TransferButton />
+  </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style>
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+main {
+  width: 1200px;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+    margin: 0 4px;
+  }
 }
 
-nav {
+.swiper {
+  margin: 0 !important;
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.swiper-wrapper {
+  width: 100%;
+  margin-bottom: 50px;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.swiper-button-prev,
+.swiper-button-next {
+  background-image: url("./components/icons/arrow_prev.svg") !important;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: 12 !important;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.swiper-button-next {
+  background-image: url("./components/icons/arrow_next.svg") !important;
 }
 </style>

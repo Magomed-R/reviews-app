@@ -1,16 +1,17 @@
 <script land="ts" setup>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, Navigation } from 'swiper/modules'
-import ReviewCard from '@/components/ReviewCard.vue'
 import 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import { useReviewStore } from '@/stores/counter'
+import EditCard from '@/components/EditCard.vue'
+import NewCard from '@/components/NewCard.vue'
 
 const { reviews } = useReviewStore()
 
-const getSliderPer = () => window.innerWidth > 670 ? window.innerWidth > 1150 ? 3 : 2 : 1
+const getSliderPer = () => window.innerWidth > 750 ? window.innerWidth > 1150 ? 3 : 2 : 1
 </script>
 
 <template>
@@ -19,7 +20,12 @@ const getSliderPer = () => window.innerWidth > 670 ? window.innerWidth > 1150 ? 
   }" :navigation="{ enabled: true }" :modules="[Navigation, Pagination]">
     <SwiperSlide v-for="({ id, text, username, image_url, rating }, i) in reviews.sort((a, b) => a.order - b.order)"
       :key="id">
-      <ReviewCard :text="text" :username="username" :image_url="image_url" :rating="rating" />
+      <EditCard :id="id" :text="text" :username="username" :image_url="image_url" :rating="rating"
+        :prevId="reviews[i - 1]?.id" :nextId="reviews[i + 1]?.id" />
+    </SwiperSlide>
+
+    <SwiperSlide>
+      <NewCard />
     </SwiperSlide>
   </swiper>
 </template>

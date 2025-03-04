@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { logger } from './libs/logger'
@@ -16,11 +17,12 @@ if (!PORT || !IO_SECRET || !DATABASE_URL || !CACHE_URL)
 const entry = async () => {
   const app = express()
   const server = createServer(app)
-  const io = new Server(server, { path: '/socket' })
+  const io = new Server(server, { path: '/socket', cors: { origin: '*' } })
 
   app.use(httpLoggerMiddleware)
   app.use(sessionMiddleware)
   app.use(express.json())
+  app.use(cors({ origin: '*' }))
   app.use(express.static('../storage'))
 
   app.use('/api/v1', v1Router)

@@ -1,5 +1,4 @@
 **/node_modules
-**/.env
+server/.env
 **/dist
 /pg_data
-/storage/**
