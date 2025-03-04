@@ -6,7 +6,7 @@ defineProps({
   image_url: String
 })
 
-const getPath = (path: string) => new URL(path, import.meta.env.VITE_BASE_URL).href
+const getPath = (path: string) => new URL(path, import.meta.env.VITE_API_URL).href
 </script>
 
 <template>

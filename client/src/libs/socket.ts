@@ -3,7 +3,7 @@ import type { Store } from 'pinia'
 import { io as createIO } from 'socket.io-client'
 import { onMounted } from 'vue'
 
-export const io = createIO(import.meta.env.VITE_BASE_URL, {
+export const io = createIO(import.meta.env.VITE_API_URL, {
   path: '/socket'
 })
 

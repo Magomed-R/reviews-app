@@ -4,11 +4,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const isEditPage = () => router.currentRoute.value.path === '/edit'
+const getImageUrl = () => import.meta.env.VITE_CLIENT_URL + (isEditPage() ? '/look.png' : '/edit.svg')
 </script>
 
 <template>
   <RouterLink :to="isEditPage() ? '/' : '/edit'" class="button" :style="{
-    backgroundImage: `url(${isEditPage() ? '/src/components/icons/look.png' : '/src/components/icons/edit.svg'})`
+    backgroundImage: `url(${getImageUrl()})`
   }"></RouterLink>
 </template>
 

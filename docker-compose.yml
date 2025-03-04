@@ -1,4 +1,17 @@
 services:
+  client:
+    container_name: reviews_app_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    env_file:
+      - ./client/.env
+    depends_on:
+      - api
+    ports:
+      - 7000:7000
+    networks:
+      - reviews-net
   db:
     container_name: reviews_app_db
     image: postgres
